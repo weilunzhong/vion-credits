@@ -36,17 +36,3 @@ if __name__ == "__main__":
     FHC = FrameHistCalculator()
     video_path = "/mnt/movies03/boxer_movies/tt3247714/Survivor (2015)/Survivor.2015.720p.BluRay.x264.YIFY.mp4"
     hist_generator = FHC.frame_reader(video_path, 0.1)
-#    log_path = "/home/vionlabs/Documents/vionlabs_weilun/video_projects/credit_detection/credit_log/with_ratio_tt1401152.txt"
-#    log_file = open(log_path, 'r')
-#    hist_result_array = np.zeros(0)
-#    for index, line in enumerate(log_file):
-#        if index == 0:
-#            start_frame_index = int(getWords(line)[0])
-#
-#        if(index%2)==1:
-#            hist_ratio = float(line[0:9])
-#            hist_result_array = np.append(hist_result_array,hist_ratio)
-#    hist_result_array = np.delete(hist_result_array,0)
-#    result = ECD.array_sliding_window(hist_result_array, 20, 0.55)
-#
-#    print "start is {0}, end is {1}".format(np.argwhere(result==1), np.argwhere(result==-1))
