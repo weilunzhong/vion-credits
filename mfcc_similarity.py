@@ -43,12 +43,11 @@ class StartCreditDetector(object):
 
         sim_score_list = self._window_similarity(truncated_base_mfcc, truncated_income_mfcc, len(truncated_base_mfcc))
         print [int(i) for i in sim_score_list]
-        start_credit_index = [i for i, value in enumerate(sim_score_list) if value < 30]
+        start_credit_index = [i for i , value in enumerate(sim_score_list) if value < 30]
         print "s3e1: ", truncated_base_timestamp[start_credit_index]
         print "s3e2: ", truncated_income_timestamp[start_credit_index]
         print "diff in the two: ", self.shift_diff
 
-        
 
 if __name__ == "__main__":
     path_1 = "/media/weilun/tv_series/audio_file/house_of_cards_1.wav"
