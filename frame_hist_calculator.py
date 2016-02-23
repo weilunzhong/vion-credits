@@ -1,9 +1,9 @@
 import numpy as np
 import pysrt
-#from vionrnd.models import FrameHistogram
 from vionaux.rnd import vidioids
 import re
 from end_credit_detector import EndCreditDetector
+#from vionrnd.models import FrameHistogram
 
 class FrameHistCalculator(object):
 

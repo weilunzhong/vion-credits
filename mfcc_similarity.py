@@ -25,7 +25,7 @@ class StartCreditDetector(object):
                 current_score = min(sim_score_list)
                 matched_base_idx = idx1*sample_dist
                 matched_income_idx = np.argmin(sim_score_list)
-        print current_score, matched_base_idx, matched_income_idx 
+        print current_score, matched_base_idx, matched_income_idx
         self.shift_diff = matched_base_idx - matched_income_idx
         print self.shift_diff
 
@@ -44,9 +44,12 @@ class StartCreditDetector(object):
         sim_score_list = self._window_similarity(truncated_base_mfcc, truncated_income_mfcc, len(truncated_base_mfcc))
         print [int(i) for i in sim_score_list]
         start_credit_index = [i for i , value in enumerate(sim_score_list) if value < 30]
-        print "s3e1: ", truncated_base_timestamp[start_credit_index]
-        print "s3e2: ", truncated_income_timestamp[start_credit_index]
+#        print "s3e1: ", truncated_base_timestamp[start_credit_index]
+#        print "s3e2: ", truncated_income_timestamp[start_credit_index]
         print "diff in the two: ", self.shift_diff
+        base_mfcc_credit_start = truncated_base_timestamp[start_credit_index[0]]
+        income_mfcc_credit_start = truncated_income_timestamp[start_credit_index[0]]
+        print "credit start for base {0}, and for income {1}.".format(base_mfcc_credit_start, income_mfcc_credit_start)
 
 
 if __name__ == "__main__":

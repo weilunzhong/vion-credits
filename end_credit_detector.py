@@ -1,4 +1,4 @@
-from vionrnd.models import FrameHistogram
+#from vionrnd.models import FrameHistogram
 import numpy as np
 
 
@@ -8,7 +8,7 @@ class EndCreditDetector(object):
     def single_frame_hist_dominance(self, frame_hist):
         dominating_pixel = sum(np.sort(frame_hist)[-5:])
         return float(dominating_pixel) / sum(frame_hist)
-        
+
     def frame_hist_dominance(self, frame_hists):
         dominating_ratio = [self.single_frame_hist_dominance(i) for i in frame_hists]
         return np.asarray(dominating_ratio)
@@ -19,7 +19,7 @@ class EndCreditDetector(object):
         for idx in range(0, array_length - window_size):
             smoothed_array[idx] = float(np.sum(frame_hists[idx:idx+window_size]))/window_size
         return smoothed_array, time_stamps[0:array_length-window_size]
-            
+
     """ dynamic thresholding that doesnt work well for now
     def interpolation(self, smoothed_array, time_stamps, threshold):
         max_ratio, min_ratio  =  np.max(smoothed_array), np.min(smoothed_array)
