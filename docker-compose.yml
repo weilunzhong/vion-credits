@@ -1,0 +1,6 @@
+vion-credits:
+    build: .
+    ports:
+        - "5000:5000"
+    volumes:
+        - .:/source_code
