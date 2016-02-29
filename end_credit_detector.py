@@ -1,6 +1,8 @@
 #from vionrnd.models import FrameHistogram
 import numpy as np
 
+class VionCreditError(Exception):
+    pass
 
 
 class EndCreditDetector(object):
@@ -38,11 +40,14 @@ class EndCreditDetector(object):
         max_ratio, min_ratio  =  np.max(smoothed_array), np.min(smoothed_array)
         if max_ratio - min_ratio < 0.5:
             raise VionCreditError("The hist ratio max {0} and min {1} is too close, check for wind back time.".format(max_ratio, min_ratio) )
+        if max_ratio < 0.75:
+            raise VionCreditError("The hist ratio max {0} is not large enough to be a credit, check again.".format(max_ratio))
         interpolation_value = min_ratio + threshold * (max_ratio - min_ratio)
         filtered_array = [(1 if ele > interpolation_value else 0) for ele in smoothed_array]
+        print filtered_array
         pre_value = 0
         start_index, end_index = [], []
-        for idx, ratio in enumerate( filtered_array):
+        for idx, ratio in enumerate(filtered_array):
             if ratio > pre_value:
                 start_index.append(idx)
             if ratio < pre_value:
