@@ -22,7 +22,8 @@ class EndCreditDetector(object):
             smoothed_array[idx] = float(np.sum(frame_hists[idx:idx+window_size]))/window_size
         return smoothed_array, time_stamps[0:array_length-window_size]
 
-    """ dynamic thresholding that doesnt work well for now
+    """
+    # dynamic thresholding that doesnt work well for now
     def interpolation(self, smoothed_array, time_stamps, threshold):
         max_ratio, min_ratio  =  np.max(smoothed_array), np.min(smoothed_array)
         print max_ratio, min_ratio
@@ -34,12 +35,13 @@ class EndCreditDetector(object):
         idx_array = np.where(estimation_func(range(0,len(smoothed_array))) > interpolation_value)
         print "index {0} and the timestamp {1}.".format(idx_array[0][0], time_stamps[idx_array[0][0]])
         return time_stamps[idx_array[0]]
-        """
+    """
 
     def interpolation(self, smoothed_array, time_stamps, threshold):
         max_ratio, min_ratio  =  np.max(smoothed_array), np.min(smoothed_array)
         if max_ratio - min_ratio < 0.5:
             raise VionCreditError("The hist ratio max {0} and min {1} is too close, check for wind back time.".format(max_ratio, min_ratio) )
+        # TODO both threshold to be tested
         if max_ratio < 0.75:
             raise VionCreditError("The hist ratio max {0} is not large enough to be a credit, check again.".format(max_ratio))
         interpolation_value = min_ratio + threshold * (max_ratio - min_ratio)
