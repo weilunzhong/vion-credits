@@ -52,7 +52,7 @@ class StartCreditDetector(object):
         print "credit start for base {0}, and for income {1}.".format(base_mfcc_credit_start, income_mfcc_credit_start)
 
 
-if __name__ == "__main__":
+def main():
     path_1 = "/media/weilun/tv_series/audio_file/house_of_cards_1.wav"
     path_2 = "/media/weilun/tv_series/audio_file/house_of_cards_4.wav"
     VAH = audioids.VionAudioHandler()
@@ -62,3 +62,7 @@ if __name__ == "__main__":
     print "here is the mfcc length: {0}".format(len(base_mfcc))
     SCD.position_loop(base_mfcc, income_mfcc)
     SCD.lenth_extraction(base_mfcc, income_mfcc, time_stamp1, time_stamp2)
+
+
+if __name__ == "__main__":
+    main()

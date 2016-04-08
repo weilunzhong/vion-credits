@@ -3,8 +3,13 @@ from scipy.spatial import distance
 from vionaux.rnd import audioids
 
 class StartCreditHunter(object):
+    """
+    If the start credit is specified them this class finds the same content
+    If the start is not known, try StartCreditDetector
+    """
 
-    def _window_similarity(self, mfcc_1, mfcc_2, window_size):
+    @staticmethod
+    def _window_similarity(mfcc_1, mfcc_2, window_size):
         similarity_score = [distance.euclidean(mfcc_1[i][1:], mfcc_2[i][1:]) for i in range(0, window_size)]
         return similarity_score
 
@@ -19,7 +24,7 @@ class StartCreditHunter(object):
         print sims, income_timestamp[start_index]
         print start_index
 
-if __name__ == "__main__":
+def main():
     path_1 = "/media/weilun/tv_series/audio_file/humans_1.wav"
     path_2 = "/media/weilun/tv_series/audio_file/humans_2.wav"
     VAH = audioids.VionAudioHandler()
@@ -27,4 +32,8 @@ if __name__ == "__main__":
     base_mfcc, time_stamp1 = VAH.get_mfccs(path_1, 71, 115, 14000, 2048, 1400)
     income_mfcc, time_stamp2 = VAH.get_mfccs(path_2, 0, 300, 14000, 2048, 1400)
     print "here is the mfcc length: {0}".format(len(base_mfcc))
-    SCH.locate_credit_position(base_mfcc, income_mfcc, time_stamp1, time_stamp2)
+    SCH.locate_credit_position(base_mfcc, income_mfcc, time_stamp1, time_stamp2) 
+
+
+if __name__ == "__main__":
+    main()
