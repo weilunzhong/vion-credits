@@ -5,14 +5,17 @@ from vionaux.rnd import audioids
 class StartCreditDetector(object):
 
     def _window_similarity(self, mfcc_1, mfcc_2, window_size):
+        # ignore the first element in MFCC, it is corelated with volume
+        # distance is mearsured by euclidean distance
         similarity_score = [distance.euclidean(mfcc_1[i][1:], mfcc_2[i][1:]) for i in range(0, window_size)]
         return similarity_score
 
     def position_loop(self, base_mfcc, income_mfcc):
-        assert (base_mfcc.shape == income_mfcc.shape), "both mfccs must have the same dimension"
+        # loop both mfccs with window size, find the shift of start credit time
+        assert (base_mfcc.shape == income_mfcc.shape), "both mfccs must have the same dimension, base is of the shape {0} and comparing mfcc is of the shape {1}".format(base_mfcc.shape, income_mfcc.shape)
         current_score = 1e6
         sample_dist = 20
-        window_size = 20
+        window_size = 20 # parameters needs to be varified
         for idx1 in range(0,(len(base_mfcc)/sample_dist)):
             mfcc_1 = base_mfcc[idx1*sample_dist:idx1*sample_dist+window_size]
             sim_score_list = []
@@ -29,7 +32,10 @@ class StartCreditDetector(object):
         self.shift_diff = matched_base_idx - matched_income_idx
         print self.shift_diff
 
-    def lenth_extraction(self,base_mfcc, income_mfcc, base_timestamp, income_timestamp):
+    def lenth_extraction(self,base_mfcc, income_mfcc,
+                         base_timestamp, income_timestamp):
+        # extract the start credit length
+        # based on the calculated credit shift
         if self.shift_diff > 0:
             truncated_base_mfcc = base_mfcc[self.shift_diff:]
             truncated_base_timestamp = base_timestamp[self.shift_diff:]
@@ -41,9 +47,10 @@ class StartCreditDetector(object):
             truncated_base_mfcc = base_mfcc[0:len(truncated_income_mfcc)]
             truncated_base_timestamp = base_timestamp[0:len(truncated_income_mfcc)]
 
-        sim_score_list = self._window_similarity(truncated_base_mfcc, truncated_income_mfcc, len(truncated_base_mfcc))
+        sim_score_list = self._window_similarity(truncated_base_mfcc,
+                         truncated_income_mfcc, len(truncated_base_mfcc))
         print [int(i) for i in sim_score_list]
-        start_credit_index = [i for i , value in enumerate(sim_score_list) if value < 30]
+        start_credit_index = [i for i, value in enumerate(sim_score_list) if value < 30]
 #        print "s3e1: ", truncated_base_timestamp[start_credit_index]
 #        print "s3e2: ", truncated_income_timestamp[start_credit_index]
         print "diff in the two: ", self.shift_diff
